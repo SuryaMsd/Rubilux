@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Painter Data</title>
+    <title>Dealer Data</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -68,44 +68,39 @@
     </style>
 </head>
 <body>
-    <!-- Form for Painter -->
-    <form id="painterForm">
-        <h2>Painter Information</h2>
-        <label for="painterName">Painter Name:</label>
-        <input type="text" id="painterName" name="painterName"><br><br>
-
-        <label for="dealerNameForPainter">Dealer Name:</label>
-        <input type="text" id="dealerNameForPainter" name="dealerNameForPainter"><br><br>
-
-        <label for="painterMobile">Painter Mobile:</label>
-        <input type="text" id="painterMobile" name="painterMobile"><br><br>
-
-        <label for="painterPlace">Painter Place:</label>
-        <input type="text" id="painterPlace" name="painterPlace"><br><br>
-
-        <button type="button" onclick="submitPainter()">Submit Painter</button>
-        <a href="dealer.html">Dealer Create</a>
+    <!-- Form for Dealer -->
+    <form id="dealerForm">
+        <h2>Enter Dealer Information</h2>
+        <label for="dealerName">Dealer Name:</label>
+        <input type="text" id="dealerName" name="dealerName"><br><br>
+    
+        <label for="dealerMobile">Dealer Mobile:</label>
+        <input type="text" id="dealerMobile" name="dealerMobile"><br><br>
+    
+        <label for="dealerPlace">Dealer Place:</label>
+        <input type="text" id="dealerPlace" name="dealerPlace"><br><br>
+    
+        <button type="button" onclick="submitDealer()">Submit Dealer</button>
+        <a href="painter.html">Painter Create</a>
         <a href="view-dealer.html">View Dealers</a>
         <a href="view-painter.html">View Painters</a>
     </form>
     <script>
-        function submitPainter() {
-            const painterName = document.getElementById('painterName').value;
-            const dealerNameForPainter = document.getElementById('dealerNameForPainter').value;
-            const painterMobile = document.getElementById('painterMobile').value;
-            const painterPlace = document.getElementById('painterPlace').value;
+        function submitDealer() {
+            const dealerName = document.getElementById('dealerName').value;
+            const dealerMobile = document.getElementById('dealerMobile').value;
+            const dealerPlace = document.getElementById('dealerPlace').value;
 
-            // Make a POST request to save Painter data
-            fetch('/api/savePainter', {
+            // Make a POST request to save Dealer data
+            fetch('/api/saveDealer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    painterName: painterName,
-                    dealerName: dealerNameForPainter,
-                    painterMobile: painterMobile,
-                    painterPlace: painterPlace
+                    dealerName: dealerName,
+                    dealerMobile: dealerMobile,
+                    dealerPlace: dealerPlace
                 })
             })
             .then(response => {
@@ -115,11 +110,11 @@
                 return response.json();
             })
             .then(data => {
-                console.log('Painter data saved:', data);
+                console.log('Dealer data saved:', data);
                 // Show success message or perform other actions upon successful save
             })
             .catch(error => {
-                console.error('There was a problem saving Painter data:', error);
+                console.error('There was a problem saving Dealer data:', error);
                 // Handle errors here
             });
         }

@@ -39,7 +39,7 @@
 
     <script>
         // Function to fetch and display dealers
-        fetch('/api/dealers')
+        fetch('http://localhost:3000/api/dealers')
             .then(response => response.json())
             .then(dealers => {
                 const dealersTable = document.getElementById('dealersData');

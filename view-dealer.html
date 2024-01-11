@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Dealer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h2>View Dealer Details</h2>
+    
+    <!-- Table to display dealer details -->
+    <table id="dealerTable">
+        <tr>
+            <th>Dealer Name</th>
+            <th>Mobile</th>
+            <th>Place</th>
+        </tr>
+        <!-- Data will be dynamically added here -->
+    </table>
+
+    <a href="dealer.html">Dealer Create</a>
+    <a href="painter.html">Painter Create</a>
+    <a href="view-painter.html">View Painters</a>
+
+    <script>
+        // JavaScript to fetch and populate data remains unchanged
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fetch dealers data from the server
+            fetch('/api/getDealers')
+                .then(response => response.json())
+                .then(data => {
+                    const dealers = data.dealers;
+                    const tableBody = document.querySelector('#dealerTable tbody');
+    
+                    // Populate the table with dealer data
+                    dealers.forEach(dealer => {
+                        const row = tableBody.insertRow();
+                        row.insertCell(0).textContent = dealer.DealerName;
+                        row.insertCell(1).textContent = dealer.Mobile;
+                        row.insertCell(2).textContent = dealer.Place;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching dealer data:', error);
+                });
+        });
+    </script>
+</body>
+</html>
