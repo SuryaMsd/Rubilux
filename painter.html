@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Painter Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 12px);
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Form for Painter -->
+    <form id="painterForm">
+        <h2>Painter Information</h2>
+        <label for="painterName">Painter Name:</label>
+        <input type="text" id="painterName" name="painterName"><br><br>
+
+        <label for="dealerNameForPainter">Dealer Name:</label>
+        <input type="text" id="dealerNameForPainter" name="dealerNameForPainter"><br><br>
+
+        <label for="painterMobile">Painter Mobile:</label>
+        <input type="text" id="painterMobile" name="painterMobile"><br><br>
+
+        <label for="painterPlace">Painter Place:</label>
+        <input type="text" id="painterPlace" name="painterPlace"><br><br>
+
+        <button type="button" onclick="submitPainter()">Submit Painter</button>
+        <a href="dealer.html">Go to Dealer Details</a>
+    </form>
+    <script>
+        function submitPainter() {
+            const painterName = document.getElementById('painterName').value;
+            const dealerNameForPainter = document.getElementById('dealerNameForPainter').value;
+            const painterMobile = document.getElementById('painterMobile').value;
+            const painterPlace = document.getElementById('painterPlace').value;
+
+            // Make a POST request to save Painter data
+            fetch('/api/savePainter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    painterName: painterName,
+                    dealerName: dealerNameForPainter,
+                    painterMobile: painterMobile,
+                    painterPlace: painterPlace
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Painter data saved:', data);
+                // Show success message or perform other actions upon successful save
+            })
+            .catch(error => {
+                console.error('There was a problem saving Painter data:', error);
+                // Handle errors here
+            });
+        }
+    </script>
+</body>
+</html>
