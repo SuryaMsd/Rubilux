@@ -68,6 +68,14 @@
         }
     </style>
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <script src="/app.js"></script>
+    <style>
+        /* Increase the size of the dropdown */
+        select#dealerName {
+            width: 100%; /* You can adjust the width as needed */
+            padding: 8px; /* You can adjust the padding as needed */
+        }
+    </style>
 </head>
 <body>
     <!-- <div id="navbar-container"></div>
@@ -77,28 +85,55 @@
         });
     </script> -->
     <!-- Form for Painter -->
-    <form id="painterForm">
-        
-        <h2>Painter Information</h2>
+    <div class="container mt-5">
+    <h2>Painter Information</h2>
+    <form id="painterForm">        
         <label for="painterName">Painter Name:</label>
-        <input type="text" id="painterName" name="painterName"><br><br>
+        <input type="text" id="painterName" name="painterName" required><br><br>
 
-        <label for="dealerNameForPainter">Dealer Name:</label>
-        <input type="text" id="dealerNameForPainter" name="dealerNameForPainter"><br><br>
+        <label for="dealerName">Select Dealer:</label>
+        <select id="dealerName" name="dealerName" required>
+            <!-- Options will be dynamically added here -->
+        </select><br><br>
 
         <label for="painterMobile">Painter Mobile:</label>
-        <input type="text" id="painterMobile" name="painterMobile"><br><br>
+        <input type="text" id="painterMobile" name="painterMobile" required><br><br>
 
         <label for="painterPlace">Painter Place:</label>
-        <input type="text" id="painterPlace" name="painterPlace"><br><br>
+        <input type="text" id="painterPlace" name="painterPlace" required><br><br>
 
-        <button type="button" onclick="submitPainter()">Submit Painter</button>
+        <button type="submit" onclick="submitPainter()">Submit Painter</button>
         <a href="dealer.html">Dealer Create</a>
         <a href="view-dealer.html">View Dealers</a>
         <a href="view-painter.html">View Painters</a>
         <a href="index.html">Home Page</a>
     </form>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js (required for Bootstrap components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
+        // Function to fetch dealer names and populate the dropdown
+        function fetchDealerNames() {
+            fetch('/api/getDealerNames')
+                .then(response => response.json())
+                .then(data => {
+                    const dealerDropdown = document.getElementById('dealerName');
+
+                    // Populate the dropdown with dealer names
+                    data.dealerNames.forEach(dealerName => {
+                        const option = document.createElement('option');
+                        option.value = dealerName;
+                        option.textContent = dealerName;
+                        dealerDropdown.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching dealer names:', error);
+                });
+        }
+
         function submitPainter() {
             const painterName = document.getElementById('painterName').value;
             const dealerNameForPainter = document.getElementById('dealerNameForPainter').value;
@@ -133,6 +168,10 @@
                 // Handle errors here
             });
         }
+        // Fetch dealer names when the page is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchDealerNames();
+        });
     </script>
     
 </body>

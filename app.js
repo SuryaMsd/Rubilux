@@ -77,6 +77,22 @@ app.get('/api/getPainters', async (req, res) => {
     }
 });
 
+// Endpoint to get the list of dealer names
+app.get('/api/getDealerNames', async (req, res) => {
+    try {
+        const pool = await sql.connect(config);
+
+        const result = await pool.request().query('SELECT DISTINCT DealerName FROM Dealer');
+
+        const dealerNames = result.recordset.map(record => record.DealerName);
+
+        res.json({ dealerNames });
+    } catch (error) {
+        console.error('Error fetching dealer names:', error);
+        res.status(500).json({ error: 'Failed to fetch dealer names' });
+    }
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
