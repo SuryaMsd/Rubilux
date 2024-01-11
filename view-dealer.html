@@ -6,32 +6,92 @@
     <title>View Dealer</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .table-container {
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .table-container thead {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
-    <!-- <div id="navbar-container"></div>
+    <div id="navbar-container"></div>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(function(){
             $("#navbar-container").load("navbar.html");
         });
-    </script> -->
+    </script>
+    <div class="container mt-5">
     <h2>View Dealer Details</h2>
-    
-    <!-- Table to display dealer details -->
-    <table id="dealerTable">
-        <tr>
-            <th>Dealer Name</th>
-            <th>Mobile</th>
-            <th>Place</th>
-        </tr>
-        <!-- Data will be dynamically added here -->
-    </table>
 
-    <a href="dealer.html">Dealer Create</a>
+    <!-- Search Bar -->
+    <input type="text" id="searchInput" placeholder="Enter Dealer ID">
+    
+    <!-- Search Button -->
+    <button onclick="searchDealers()">Search</button>
+
+    <!-- Table to display dealer details -->
+    <div class="table-container">
+    <table class="table table-bordered mt-3">
+        <thead>
+            <tr>
+                <th>UniqueID</th>
+                <th>Dealer Name</th>
+                <th>Mobile</th>
+                <th>Place</th>
+            </tr>
+        </thead>
+        <tbody id="dealerTableBody">
+            <!-- Data will be dynamically added here -->
+        </tbody>
+    </table>
+    </div>
+</div>
+
+    <!-- <a href="dealer.html">Dealer Create</a>
     <a href="painter.html">Painter Create</a>
     <a href="view-painter.html">View Painters</a>
-    <a href="index.html">Home Page</a>
+    <a href="index.html">Home Page</a> -->
+    
+    <!-- Bootstrap JS and Popper.js (required for Bootstrap components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Function to filter dealers based on UniqueID
+        function searchDealers() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toUpperCase();
+            const table = document.querySelector('.table');
+            const rows = table.getElementsByTagName('tr');
+
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                let shouldShowRow = false;
+
+                for (let j = 0; j < cells.length; j++) {
+                    const cell = cells[j];
+
+                    if (cell) {
+                        const textValue = cell.textContent || cell.innerText;
+
+                        if (textValue.toUpperCase().indexOf(filter) > -1) {
+                            shouldShowRow = true;
+                            break;
+                        }
+                    }
+                }
+
+                rows[i].style.display = shouldShowRow ? '' : 'none';
+            }
+        }
+
         // JavaScript to fetch and populate data remains unchanged
         document.addEventListener('DOMContentLoaded', function() {
             // Fetch dealers data from the server
@@ -39,20 +99,22 @@
                 .then(response => response.json())
                 .then(data => {
                     const dealers = data.dealers;
-                    const tableBody = document.querySelector('#dealerTable tbody');
+                    const tableBody = document.querySelector('#dealerTableBody');
     
                     // Populate the table with dealer data
                     dealers.forEach(dealer => {
                         const row = tableBody.insertRow();
-                        row.insertCell(0).textContent = dealer.DealerName;
-                        row.insertCell(1).textContent = dealer.Mobile;
-                        row.insertCell(2).textContent = dealer.Place;
+                        row.insertCell(0).textContent = dealer.UniqueID;
+                        row.insertCell(1).textContent = dealer.DealerName;
+                        row.insertCell(2).textContent = dealer.Mobile;
+                        row.insertCell(3).textContent = dealer.Place;
                     });
                 })
                 .catch(error => {
                     console.error('Error fetching dealer data:', error);
                 });
         });
+        
     </script>
 </body>
 </html>
