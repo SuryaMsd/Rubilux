@@ -5,7 +5,7 @@ const sql = require('mssql');
 app.use(express.json());
 
 const config = {
-    server: 'localhost\SQLEXPRESS', 
+    server: 'DESKTOP-7ELIP8P\SQLEXPRESS', 
     database: 'rubilux',
     options: {
         encrypt: false // If you're using Azure, set to true
