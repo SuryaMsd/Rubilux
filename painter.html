@@ -21,7 +21,8 @@
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 400px;
-            width: 100%;
+            width: 500px;
+
         }
 
         h2 {
@@ -42,7 +43,7 @@
             border-radius: 4px;
         }
 
-        input[type="submit"] {
+        button[type="submit"] {
             width: 100%;
             padding: 10px;
             border: none;
@@ -52,7 +53,7 @@
             cursor: pointer;
         }
 
-        input[type="submit"]:hover {
+        button[type="submit"]:hover {
             background-color: #0056b3;
         }
         a {
@@ -73,7 +74,7 @@
         /* Increase the size of the dropdown */
         select#dealerName {
             width: 100%; /* You can adjust the width as needed */
-            padding: 8px; /* You can adjust the padding as needed */
+            padding: 10px; /* You can adjust the padding as needed */
         }
     </style>
 </head>
@@ -86,8 +87,8 @@
     </script> -->
     <!-- Form for Painter -->
     <div class="container mt-5">
-    <form id="painterForm">
-        <h2>Painter Information</h2>
+    <form id="painterForm"> 
+        <h2>Painter Information</h2>       
         <label for="painterName">Painter Name:</label>
         <input type="text" id="painterName" name="painterName" required><br><br>
 
