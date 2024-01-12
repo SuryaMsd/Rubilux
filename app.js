@@ -1,99 +1,102 @@
 const express = require('express');
 const app = express();
-const sql = require('mssql');
+const { Pool } = require('pg');
+const cors = require('cors');
+const PORT = 3000;
 
+app.use(cors());
 app.use(express.json());
 
-const config = {
-    server: 'DESKTOP-7ELIP8P\SQLEXPRESS', 
+const pool = new Pool({
+    user: 'postgres',
+    host: 'localhost', // often 'localhost'
     database: 'rubilux',
-    options: {
-        encrypt: false // If you're using Azure, set to true
-    }
-};
+    password: 'root',
+    port: 5432, // Change this to the port you've chosen during PostgreSQL installation
+  });
 
 // Endpoint to handle POST requests for creating a new dealer
-app.post('/api/saveDealer', async (req, res) => {
+app.post('http://127.0.0.1:5500/api/saveDealer', async (req, res) => {
     try {
-        const { dealerName, dealerMobile, dealerPlace } = req.body;
-
-        const pool = await sql.connect(config);
-
-        await pool.request()
-            .input('dealerName', sql.NVarChar, dealerName)
-            .input('dealerMobile', sql.NVarChar, dealerMobile)
-            .input('dealerPlace', sql.NVarChar, dealerPlace)
-            .query('INSERT INTO Dealer (DealerName, Mobile, Place) VALUES (@dealerName, @dealerMobile, @dealerPlace)');
-
-        res.status(201).json({ message: 'Dealer data saved successfully' });
+      const { dealerName, dealerMobile, dealerPlace } = req.body;
+  
+      const queryText = 'INSERT INTO Dealer (DealerName, Mobile, Place) VALUES ($1, $2, $3)';
+      const values = [dealerName, dealerMobile, dealerPlace];
+  
+      await pool.query(queryText, values);
+  
+      res.status(201).json({ message: 'Dealer data saved successfully' });
     } catch (error) {
-        console.error('Error saving Dealer data:', error);
-        res.status(500).json({ error: 'Failed to save Dealer data' });
+      console.error('Error saving Dealer data:', error);
+      res.status(500).json({ error: 'Failed to save Dealer data' });
     }
-});
+  });
 
 // Similar endpoint for saving Painter data
+
 // Endpoint to handle POST requests for creating a new painter
-app.post('/api/savePainter', async (req, res) => {
+app.post('http://127.0.0.1:5432/api/savePainter', async (req, res) => {
     try {
-        const { painterName, painterMobile, painterPlace } = req.body;
-
-        const pool = await sql.connect(config);
-
-        await pool.request()
-            .input('painterName', sql.NVarChar, painterName)
-            .input('painterMobile', sql.NVarChar, painterMobile)
-            .input('painterPlace', sql.NVarChar, painterPlace)
-            .query('INSERT INTO Painter (PainterName, Mobile, Place) VALUES (@painterName, @painterMobile, @painterPlace)');
-
-        res.status(201).json({ message: 'Painter data saved successfully' });
+      const { painterName, painterMobile, painterPlace } = req.body;
+  
+      const queryText = 'INSERT INTO Painter (PainterName, Mobile, Place) VALUES ($1, $2, $3)';
+      const values = [painterName, painterMobile, painterPlace];
+  
+      await pool.query(queryText, values);
+  
+      res.status(201).json({ message: 'Painter data saved successfully' });
     } catch (error) {
-        console.error('Error saving Painter data:', error);
-        res.status(500).json({ error: 'Failed to save Painter data' });
+      console.error('Error saving Painter data:', error);
+      res.status(500).json({ error: 'Failed to save Painter data' });
     }
-});
+  });
 
-app.get('/api/getDealers', async (req, res) => {
+// Endpoint to handle GET requests for fetching dealers
+app.get('http://127.0.0.1:5432/api/getDealerNames', async (req, res) => {
     try {
-        const pool = await sql.connect(config);
-        const result = await pool.request().query('SELECT * FROM Dealer');
-        const dealers = result.recordset;
-        res.json({ dealers });
+      const queryText = 'SELECT * FROM Dealer';
+      const result = await pool.query(queryText);
+      const dealers = result.rows;
+  
+      res.json({ dealers });
     } catch (error) {
-        console.error('Error fetching dealers:', error);
-        res.status(500).json({ error: 'Failed to fetch dealers' });
+      console.error('Error fetching dealers:', error);
+      res.status(500).json({ error: 'Failed to fetch dealers' });
     }
-});
+  });
+  
 
+// Endpoint to handle GET requests for fetching painters
 app.get('/api/getPainters', async (req, res) => {
     try {
-        const pool = await sql.connect(config);
-        const result = await pool.request().query('SELECT * FROM Painter');
-        const painters = result.recordset;
-        res.json({ painters });
+      const queryText = 'SELECT * FROM Painter';
+      const result = await pool.query(queryText);
+      const painters = result.rows;
+  
+      res.json({ painters });
     } catch (error) {
-        console.error('Error fetching painters:', error);
-        res.status(500).json({ error: 'Failed to fetch painters' });
+      console.error('Error fetching painters:', error);
+      res.status(500).json({ error: 'Failed to fetch painters' });
     }
-});
+  });
+  
 
 // Endpoint to get the list of dealer names
 app.get('/api/getDealerNames', async (req, res) => {
     try {
-        const pool = await sql.connect(config);
-
-        const result = await pool.request().query('SELECT DISTINCT DealerName FROM Dealer');
-
-        const dealerNames = result.recordset.map(record => record.DealerName);
-
-        res.json({ dealerNames });
+      const queryText = 'SELECT DISTINCT "DealerName" FROM "Dealer"';
+      const result = await pool.query(queryText);
+  
+      const dealerNames = result.rows.map(record => record.DealerName);
+  
+      res.json({ dealerNames });
     } catch (error) {
-        console.error('Error fetching dealer names:', error);
-        res.status(500).json({ error: 'Failed to fetch dealer names' });
+      console.error('Error fetching dealer names:', error);
+      res.status(500).json({ error: 'Failed to fetch dealer names' });
     }
-});
+  });
+  
 
-const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
