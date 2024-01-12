@@ -89,7 +89,7 @@
     </script> -->
     <!-- Form for Painter -->
     <!-- <div class="container mt-5"> -->
-    <form id="painterForm"> 
+    <form id="painterForm" method="POST"> 
         <h2>Painter Information</h2>       
         <label for="painterName">Painter Name:</label>
         <input type="text" id="painterName" name="painterName" required><br><br>
@@ -119,7 +119,7 @@
     <script>
         // Function to fetch dealer names and populate the dropdown
         function fetchDealerNames() {
-            fetch('/api/getDealerNames')
+            fetch('http://127.0.0.1:3000/api/getDealerNames')
                 .then(response => response.json())
                 .then(data => {
                     const dealerDropdown = document.getElementById('dealerName');
@@ -144,7 +144,7 @@
             const painterPlace = document.getElementById('painterPlace').value;
 
             // Make a POST request to save Painter data
-            fetch('/api/savePainter', {
+            fetch('http://127.0.0.1:3000/api/savePainter', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

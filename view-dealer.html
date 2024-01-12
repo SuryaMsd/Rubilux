@@ -96,7 +96,7 @@
         // JavaScript to fetch and populate data remains unchanged
         document.addEventListener('DOMContentLoaded', function() {
             // Fetch dealers data from the server
-            fetch('/api/getDealers')
+            fetch('http://127.0.0.1:3000/api/getDealers')
                 .then(response => response.json())
                 .then(data => {
                     const dealers = data.dealers;

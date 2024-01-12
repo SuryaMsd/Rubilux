@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
 const sql = require('mssql');
+const cors = require('cors');
 
+app.use(cors());
 app.use(express.json());
 
 const config = {
-    server: 'DESKTOP-7ELIP8P\SQLEXPRESS', 
+    server: 'DESKTOP-7ELIP8P\\SQLEXPRESS', 
     database: 'rubilux',
     options: {
         encrypt: false // If you're using Azure, set to true
@@ -13,7 +15,7 @@ const config = {
 };
 
 // Endpoint to handle POST requests for creating a new dealer
-app.post('/api/saveDealer', async (req, res) => {
+app.post('http://127.0.0.1:5500/api/saveDealer', async (req, res) => {
     try {
         const { dealerName, dealerMobile, dealerPlace } = req.body;
 
@@ -34,7 +36,7 @@ app.post('/api/saveDealer', async (req, res) => {
 
 // Similar endpoint for saving Painter data
 // Endpoint to handle POST requests for creating a new painter
-app.post('/api/savePainter', async (req, res) => {
+app.post('http://127.0.0.1:5500/api/savePainter', async (req, res) => {
     try {
         const { painterName, painterMobile, painterPlace } = req.body;
 
@@ -53,7 +55,7 @@ app.post('/api/savePainter', async (req, res) => {
     }
 });
 
-app.get('/api/getDealers', async (req, res) => {
+app.get('http://127.0.0.1:5500//api/getDealers', async (req, res) => {
     try {
         const pool = await sql.connect(config);
         const result = await pool.request().query('SELECT * FROM Dealer');
@@ -65,7 +67,7 @@ app.get('/api/getDealers', async (req, res) => {
     }
 });
 
-app.get('/api/getPainters', async (req, res) => {
+app.get('http://127.0.0.1:5500/api/getPainters', async (req, res) => {
     try {
         const pool = await sql.connect(config);
         const result = await pool.request().query('SELECT * FROM Painter');
@@ -78,7 +80,7 @@ app.get('/api/getPainters', async (req, res) => {
 });
 
 // Endpoint to get the list of dealer names
-app.get('/api/getDealerNames', async (req, res) => {
+app.get('http://127.0.0.1:5500/api/getDealerNames', async (req, res) => {
     try {
         const pool = await sql.connect(config);
 

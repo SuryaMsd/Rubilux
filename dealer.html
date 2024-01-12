@@ -80,7 +80,7 @@
         });
     </script> -->
     <!-- Form for Dealer -->
-    <form id="dealerForm">
+    <form id="dealerForm" method="POST">
         <h2>Enter Dealer Information</h2>
         <label for="dealerName">Dealer Name:</label>
         <input type="text" id="dealerName" name="dealerName" required><br><br>
@@ -99,13 +99,14 @@
     </form>
     <script>
         function submitDealer() {
+            // console.log('Submit Dealer button clicked');
             // event.preventDefault();
             const dealerName = document.getElementById('dealerName').value;
             const dealerMobile = document.getElementById('dealerMobile').value;
             const dealerPlace = document.getElementById('dealerPlace').value;
 
             // Make a POST request to save Dealer data
-            fetch('/api/saveDealer', {
+            fetch('http://127.0.0.1:3000/api/saveDealer', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

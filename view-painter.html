@@ -78,7 +78,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             // Fetch painters data from the server
-            fetch('/api/getPainters')
+            fetch('http://127.0.0.1:3000/api/getPainters')
                 .then(response => response.json())
                 .then(data => {
                     const painters = data.painters;
